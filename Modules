@@ -1,0 +1,105 @@
+Type Pointer
+   targetWS As String
+   targetCell As String
+   type As String
+End Type
+
+Type PointerList
+   count As Integer
+   mapping(1 To 200) As Pointer
+End Type
+
+
+
+FORM CODE: 
+
+
+
+
+
+
+
+
+Private Sub CommandButton1_Click()
+  Dim mapObj As PointerList
+  Dim x As Integer
+  
+  
+  For x = 1 To 10
+    
+    
+    mapObj.count = x
+    mapObj.mapping(x).type = "Foo"
+    mapObj.mapping(x).targetWS = "Foo"
+    mapObj.mapping(x).targetCell = "Foo"
+    
+    If x = 10 Then
+      mapObj.mapping(8) = mapObj.mapping(7)
+      
+    End If
+      
+    
+    
+  Next x
+  
+  MsgBox "OK"
+
+End Sub
+
+Private Sub CommandButton2_Click()
+'PURPOSE: Have User Select a Folder Path and Store it to a variable
+'SOURCE: www.TheSpreadsheetGuru.com/the-code-vault
+Dim FldrPicker As FileDialog
+Dim myFolder As String
+'Have User Select Folder to Save to with Dialog Box
+  Set FldrPicker = Application.FileDialog(msoFileDialogFolderPicker)
+  With FldrPicker
+    .Title = "Select A Target Folder"
+    .AllowMultiSelect = False
+    If .Show <> -1 Then Exit Sub 'Check if user clicked cancel button
+    myFolder = .SelectedItems(1) & "\"
+  End With
+'Carry out rest of your code here....
+path.Value = myFolder
+End Sub
+
+
+
+Private Sub CommandButton3_Click()
+    Dim wbSource As Workbook
+    
+    Application.ScreenUpdating = False
+    Set wbSource = Workbooks.Open("C:\Users\jadsi\OneDrive\Documents\Justin Example.xlsm")
+
+    MsgBox CheckIfSheetExists("foo", wbSource)
+    MsgBox CheckIfSheetExists("Sheet1", wbSource)
+
+    MsgBox wbSource.Sheets("Sheet1").Range("B2").Value
+    
+    wbSource.Close SaveChanges:=False
+    
+   Application.ScreenUpdating = True
+    
+
+
+
+End Sub
+
+Private Sub UserForm_Initialize()
+
+  cb1.AddItem ("Use Filename")
+  cb1.AddItem ("Use Worksheet")
+
+End Sub
+
+
+Function CheckIfSheetExists(SheetName As String, ByRef wb As Workbook) As Boolean
+      CheckIfSheetExists = False
+      For Each WS In wb.Worksheets
+        If SheetName = WS.Name Then
+          CheckIfSheetExists = True
+          Exit Function
+        End If
+      Next WS
+End Function
+
